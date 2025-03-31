@@ -27,4 +27,4 @@ Este repositório reúne os procedimentos realizados para consolidar os dados da
 ## 👤 Autor
 
 Tiago Ribeiro dos Anjos  
-[Link para o Lattes ou GitHub]
+tiago15anjos@gmail.com
