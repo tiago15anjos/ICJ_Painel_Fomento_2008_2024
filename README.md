@@ -9,7 +9,7 @@ Este repositório reúne os procedimentos realizados para consolidar os dados da
 
 - `notebooks/`: Notebook do Google Colab com o código de importação, limpeza e junção dos arquivos.
 - `docs/`: Documentação detalhada dos procedimentos, conforme normas ABNT.
-- `dados/`: Diretório sugerido para os arquivos ICJ_2008.xlsx a ICJ_2024.xlsx (não incluídos neste repositório).
+- `dados/`: Diretório sugerido para os arquivos ICJ_2008.xlsx a ICJ_2024.xlsx
 
 ## ⚙️ Etapas Realizadas
 
