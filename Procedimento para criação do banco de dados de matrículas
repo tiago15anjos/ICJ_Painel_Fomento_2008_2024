@@ -1,0 +1,50 @@
+# Recarregar o arquivo Excel novamente (ambiente redefinido)
+import pandas as pd
+
+caminho_arquivo = '/mnt/data/Matrículas_Educação_Básica_2008_2023.xlsx'
+abas = pd.ExcelFile(caminho_arquivo).sheet_names
+
+# Novo DataFrame consolidado com as colunas corretas
+dados_consolidados_corrigidos = pd.DataFrame()
+
+# Iterar pelas abas (anos) e coletar os dados corretos conforme nova instrução
+for aba in abas:
+    dados_ano = pd.read_excel(caminho_arquivo, sheet_name=aba)
+    
+    # Selecionar linhas e colunas específicas orientadas pelo usuário
+    dados_limpos = dados_ano.iloc[11:, [0, 1, 2, 3, 10, 11, 16]].copy()
+    
+    # Renomear colunas
+    dados_limpos.columns = [
+        'Regiao_Geografica', 'Unidade_da_Federacao', 'Municipio', 'Codigo_do_Municipio',
+        'Ens_Fund_Anos_Finais', 'Ensino_Medio', 'Ensino_Medio_Tecnico'
+    ]
+    
+    # Remover linhas completamente vazias e resetar índice
+    dados_limpos.dropna(how='all', inplace=True)
+    dados_limpos.reset_index(drop=True, inplace=True)
+    
+    # Converter colunas numéricas para valores numéricos (inteiros)
+    colunas_numericas = [
+        'Ens_Fund_Anos_Finais', 'Ensino_Medio', 'Ensino_Medio_Tecnico'
+    ]
+    dados_limpos[colunas_numericas] = dados_limpos[colunas_numericas].apply(pd.to_numeric, errors='coerce')
+    
+    # Adicionar coluna do ano
+    ano = aba.split('_')[1]  # Extrai o ano do nome da aba
+    dados_limpos['Ano'] = int(ano)
+    
+    # Concatenar ao DataFrame consolidado corrigido
+    dados_consolidados_corrigidos = pd.concat([dados_consolidados_corrigidos, dados_limpos], ignore_index=True)
+
+# Exportar o arquivo com observações adicionais
+arquivo_corrigido_excel = '/mnt/data/Matriculas_Corrigidas_2008_2023.xlsx'
+
+# Criar Excel com observações ao final
+with pd.ExcelWriter(arquivo_corrigido_excel, engine='xlsxwriter') as writer:
+    dados_consolidados_corrigidos.to_excel(writer, index=False, sheet_name='Matrículas')
+    workbook  = writer.book
+    worksheet = writer.sheets['Matrículas']
+    
+    
+arquivo_corrigido_excel
